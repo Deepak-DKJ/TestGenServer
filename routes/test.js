@@ -2,7 +2,13 @@ const express = require('express');
 const cors = require("cors");
 const app = express.Router();
 require('dotenv').config();
-app.use(cors());
+app.use(cors(
+    {
+        origin:["https://test-gen-ai.vercel.app"],
+        methods: ["POST", "GET", "PUT", "DELETE"],
+        credentials:true
+    }
+))
 // Middleware for file read
 const fileUpload = require("express-fileupload")
 app.use(fileUpload())

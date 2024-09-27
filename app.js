@@ -34,7 +34,6 @@ app.use('/api/auth', authRoutes);
 const testDetailsRoutes = require('./routes/test');
 app.use('/api/mcqs', testDetailsRoutes)
 
-app.use(cors()); // Use the cors middleware
 app.get("/new", (req, res) => {
     console.log("NEW PAGE");
     res.send("LMAO");
