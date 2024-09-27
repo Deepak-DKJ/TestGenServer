@@ -2,6 +2,14 @@ const express = require("express");
 const app = express();
 const cors = require("cors"); 
 require('dotenv').config();
+
+app.use(cors(
+    {
+        origin:["https://test-gen-ai.vercel.app"],
+        methods: ["POST", "GET", "PUT", "DELETE"],
+        credentials:true
+    }
+))
 //DB configuration
 const mongoose = require('mongoose'); 
 const connectToMongo = async () => {
