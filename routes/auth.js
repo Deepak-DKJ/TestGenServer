@@ -16,7 +16,13 @@ const jwt = require('jsonwebtoken');
 const fetchUserFromToken = require('../middleware/getUserDetails');
 let JWT_SECRET_SIGN = process.env.JWT_KEY
 
-app.use(cors());
+app.use(cors(
+    {
+        origin:["https://test-gen-ai.vercel.app"],
+        methods: ["POST", "GET", "PUT", "DELETE"],
+        credentials:true
+    }
+))
 
 // Login user
 app.post("/login", async (req, res) => {
