@@ -18,7 +18,7 @@ let JWT_SECRET_SIGN = process.env.JWT_KEY
 
 app.use(cors(
     {
-        origin:["https://test-gen-ai.vercel.app"],
+        origin:["https://test-gen-ai.vercel.app", "http://localhost:3000"],
         methods: ["POST", "GET", "PUT", "DELETE"],
         credentials:true
     }
