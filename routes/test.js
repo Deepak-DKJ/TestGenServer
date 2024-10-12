@@ -135,7 +135,7 @@ app.post("/addtest", fetchUserFromToken, async (req, res) => {
         prompt += input_data
         const result = await model.generateContent(prompt);
         const dat = result.response.text()
-        // console.log("AI RESPONSE: ", dat);
+        console.log("AI RESPONSE: ", dat);
         let Lines = dat.split("$").filter(line => line.trim() !== "");
 
         let questions = []
