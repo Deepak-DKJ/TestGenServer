@@ -119,7 +119,7 @@ app.get("/gettest/:id", fetchUserFromToken, async (req, res) => {
 })
 
 app.post("/addtest", fetchUserFromToken, async (req, res) => {
-    console.log("INP QS: ", req.body.inp);
+    console.log("INP QS: ", req.body.qsns);
     try {
         const _id = req.ID
         // console.log(req.body)
@@ -129,7 +129,7 @@ app.post("/addtest", fetchUserFromToken, async (req, res) => {
         let prompt = "Given the following text, generate exactly ";
         prompt += (number_of_questions.toString())
         prompt += ' multiple-choice questions (MCQs). No more, no less. Each question should have 4 answer options, with one correct answer. Structure the output in a String format as follows: Return an overall string that has series of lines in which each line represents a mcq. A line has 6 parts(as strings) separated by five "|" PIPE symbol for each question in every line. 1st string - question, Options : 2nd, 3rd, 4th & 5th, 6th part of line, then option number for correct answer, then "$". Dollar marks end of a line(question). Example: "question|option1|option2|option3|option4|ansis4$question|option1|option2|option3|option4|ansis2$question|... and so on.... DO NOT return question number and RETURN a single output string. The MCQs should be relevant to the content of the provided text.'
-        console.log(prompt)
+        // console.log(prompt)
 
         prompt += "\n\n"
         prompt += input_data
