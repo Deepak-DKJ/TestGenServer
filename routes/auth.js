@@ -27,7 +27,7 @@ app.use(cors(
 // Login user
 app.post("/login", async (req, res) => {
     if ((req.body.email).length === 0) {
-        res.status(400).json({error:"The 'Name' or 'email' field cannot be blank!"})
+        res.status(400).json({error:"The 'Email' field cannot be blank!"})
         return
     }
     if ((req.body.password).length === 0) {
@@ -36,8 +36,8 @@ app.post("/login", async (req, res) => {
     }
 
     let isUserExists = await User.findOne({ email: req.body.email })
-    if(!isUserExists)
-    isUserExists = await User.findOne({ name: req.body.email })
+    // if(!isUserExists)
+    // isUserExists = await User.findOne({ name: req.body.email })
 
     if (!isUserExists) {
         res.status(400).json({error:"Please login with correct credentials!"})
