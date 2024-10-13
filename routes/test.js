@@ -217,7 +217,8 @@ app.post("/addtest", fetchUserFromToken, async (req, res) => {
 
     } catch (error) {
         console.error(error.message);
-        return res.status(500).json({ error: "Internal Server Error" });
+        // return res.status(500).json({ error: "Internal Server Error" });
+        return res.status(500).json({ error: error.message});
     }
 })
 app.put("/feedbacks", fetchUserFromToken, async (req, res) => {
