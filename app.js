@@ -25,8 +25,8 @@ connectToMongo();
 // Defining middleware bodyparser to read req.body in between the HTTP req-response cycle
 const bodyParser = require('body-parser');
 // app.use(bodyParser.json());
-app.use(bodyParser.json({limit: '5mb'}));
-app.use(bodyParser.urlencoded({limit: '5mb'}));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb'}));
 
 // Adding routes for authorization
 const authRoutes = require('./routes/auth'); 
