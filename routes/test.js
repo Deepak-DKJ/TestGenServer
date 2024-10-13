@@ -119,7 +119,7 @@ app.get("/gettest/:id", fetchUserFromToken, async (req, res) => {
 })
 
 app.post("/addtest", fetchUserFromToken, async (req, res) => {
-    console.log("INP QS: ", req.body.qsns);
+    // console.log("INP QS: ", req.body.qsns);
     try {
         const _id = req.ID
         // console.log(req.body)
@@ -135,7 +135,7 @@ app.post("/addtest", fetchUserFromToken, async (req, res) => {
         prompt += input_data
         const result = await model.generateContent(prompt);
         const dat = result.response.text()
-        console.log("AI RESPONSE: ", dat);
+        // console.log("AI RESPONSE: ", dat);
         let Lines = dat.split("$").filter(line => line.trim() !== "");
 
         let questions = []
