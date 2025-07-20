@@ -19,7 +19,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 
-const model = genAI.getGenerativeModel({ model: "models/gemini-2.5-flash" });
+const model = genAI.getGenerativeModel({ model: "models/gemini-2.5-pro" });
 const multer = require("multer");
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -225,6 +225,12 @@ app.post("/addtest", upload.single("uploadedDoc"), fetchUserFromToken, async (re
 
 
     } catch (error) {
+        if (error.message && (error.message.includes('429') || error.message.includes('Too Many Requests'))) {
+            return res.status(500).json({
+                message: "Rate limit exceeded. Please try again later.",
+                airesp: "Rate limit exceeded. Please try again later or check billing details."
+            });
+        }
         console.error(error.message);
         // return res.status(500).json({ error: "Internal Server Error" });
         return res.status(500).json({ error: error.message });
