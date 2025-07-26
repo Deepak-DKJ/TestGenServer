@@ -23,6 +23,54 @@ app.use(cors(
         credentials:true
     }
 ))
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID); // Replace with your Google client ID
+
+app.post("/google/callback", async (req, res) => {
+    const token = req.body.token;
+    try {
+        console.log("Token:", token)
+        console.log("Client id", process.env.GOOGLE_CLIENT_ID)
+        // Verify the Google token
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: process.env.GOOGLE_CLIENT_ID,  // Your Google Client ID
+        });
+
+        console.log("ticket payload: ", ticket)
+
+        const payload = ticket.getPayload();
+        const googleEmail = payload.email;
+        const googleName = payload.name;
+
+        // Check if user already exists in your database
+        let user = await User.findOne({ email: googleEmail });
+        // console.log(googleEmail)
+        // console.log(googleName)
+        if (!user) {
+            // If user doesn't exist, create a new user
+            user = new User({
+                name: googleName,
+                email: googleEmail,
+                password:  (Math.random() + 1).toString(36).substring(7), // You can set an empty password for Google users
+                dateofcreation: new Date(),
+            });
+            await user.save();
+        }
+        const data = {
+            name: user.name,
+            email: user.email,
+            created: formatDate(user.dateofcreation),
+        };
+
+        // Create JWT token for the user
+        const authToken = jwt.sign({ ID: user.id }, JWT_SECRET_SIGN);
+        res.json({ authToken: authToken, userData: data });
+    } catch (error) {
+        console.error("Error during Google login:", error);
+        res.status(400).json({ error: "Google login failed!" });
+    }
+});
 
 // Login user
 app.post("/login", async (req, res) => {

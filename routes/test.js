@@ -136,12 +136,35 @@ app.post("/addtest", upload.single("uploadedDoc"), fetchUserFromToken, async (re
         const level = req.body.lvl;
         // console.log(level)
 
-        let prompt = `Given the following ${inputType}, generate exactly `;
-        prompt += (number_of_questions.toString());
-        prompt += ` multiple-choice questions (MCQs), with difficulty level: ${level}.`;
+        let prompt = `
+[ROLE]
+You are an expert educator and a professional test creator for any subject.
 
-        prompt += 'No more, no less. Each question should have 4 answer options, with one correct answer. Structure the output in a String format as follows: Return an overall string that has series of lines in which each line represents a mcq. A line has 6 parts(as strings) separated by five "|" PIPE symbol for each question in every line. 1st string - question, Options : 2nd, 3rd, 4th & 5th, 6th part of line, then option number for correct answer, then "$". Dollar marks end of a line(question). Example: "question|option1|option2|option3|option4|ansis4$question|option1|option2|option3|option4|ansis2$question|... and so on.... DO NOT return question number and RETURN a single output string. The MCQs should be relevant to the content of the provided '
-        prompt += inputType + '.' + "\n\n" + input_data;
+[TASK]
+Your task is to meticulously analyze the provided ${inputType} on any given topic, deeply understand its core concepts and principles, and then generate exactly ${number_of_questions.toString()} high-quality, multiple-choice questions (MCQs) with a difficulty level of: ${level}.
+
+[CRITICAL RULE]
+The generated questions MUST be standalone and test a user's genuine understanding of the subject matter. You are strictly forbidden from making any reference to the source content's layout or structure, such as page numbers, chapter titles, section numbers, or phrases like "According to the provided text..." or "In the example on page X...". The person taking this test will not have access to the source document.
+
+[INSTRUCTION]
+Synthesize the knowledge from the provided text to create conceptual questions. For example, if the text explains a scientific process using a specific case study, create a general question about the principles of that process, not about the specific details of the case study itself. Your goal is to test understanding that can be applied more broadly.
+
+[OUTPUT FORMAT]
+The output must be a single string with no line breaks. Structure the output as a series of MCQs separated by a "$" symbol. Each MCQ must have 6 parts separated by five "|" pipe symbols:
+1. The question text.
+2. Option 1.
+3. Option 2.
+4. Option 3.
+5. Option 4.
+6. The correct option number (e.g., 1, 2, 3, or 4).
+
+**The following example demonstrates the required format only. The length and complexity of your questions should be based on the source material and the requested difficulty, not on the length of this example.**
+Example: "What is the primary function of mitochondria?|Protein synthesis|Energy production|Waste removal|Cell division|2$Who was the first emperor of Rome?|Julius Caesar|Augustus|Nero|Constantine|2$"
+
+[CONTEXT DOCUMENT]
+Here is the ${inputType} to analyze:
+${input_data}
+`;
 
         let result;
         if (req.file == undefined)
